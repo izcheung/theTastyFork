@@ -32,7 +32,7 @@ const Reservation = () => {
         .email("Invalid email address"),
       phoneNumber: Yup.string().required("Phone number is required"),
       tableSize: Yup.number().required("Table size is required"),
-      dateTime: Yup.string().required("Date and time are required"),
+      dateTime: Yup.date().required("Date and time are required"),
     }),
   });
 
