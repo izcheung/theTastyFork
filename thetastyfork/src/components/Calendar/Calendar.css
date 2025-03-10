@@ -1,6 +1,7 @@
 .react-calendar {
     width: 450px;
     max-width: 100%;
+    max-height: 500px;
     background: white;
     border-radius: 15px;
     border: 1px solid rgb(209 213 219);
@@ -204,7 +205,37 @@
     background-color: rgb(238 242 255);
 }
 
-.selected-time {
+
+.reservationCalendar {
+    display: flex;
+    flex-direction: row;
+    margin-top: 2rem;
+    gap: 20px;
+}
+
+.timesWrapper {
+    max-height: 500px;
+    max-width: 100%;
+    /* background-color: red; */
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.timeOptions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    background-color: #f0f0f0;
+    padding: 1rem;
+    border-radius: 15px;
+}
+
+.error {
+    color: red;
+    font-size: 0.8em;
+}
+
+#selected-time {
     background-color: #e2b7b9;
     color: white;
     border: #e2b7b9 1px solid;
