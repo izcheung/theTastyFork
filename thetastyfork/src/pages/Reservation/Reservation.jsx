@@ -10,9 +10,10 @@ const Reservation = () => {
       name: "",
       email: "",
       phoneNumber: "",
+      dateTime: "",
     },
     onSubmit: (values) => {
-      console.log("Submit", values);
+      console.log("Submit", values); // logic to save to backend
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
@@ -20,8 +21,14 @@ const Reservation = () => {
         .required("Email is required")
         .email("Invalid email address"),
       phoneNumber: Yup.string().required("Phone number is required"),
+      dateTime: Yup.string().required("Date and time are required"),
     }),
   });
+
+  const handleDateTimeChange = (dateTime) => {
+    formik.setFieldValue("dateTime", dateTime);
+  };
+
   return (
     <div>
       <div>
@@ -66,10 +73,13 @@ const Reservation = () => {
                 formik.errors.phoneNumber}
             </div>
           </div>
+          <Calendar
+            onDateTimeChange={handleDateTimeChange}
+            selectedDateTime={formik.values.dateTime}
+          />
           <button type="submit">Submit</button>
         </form>
       </div>
-      <Calendar />
     </div>
   );
 };

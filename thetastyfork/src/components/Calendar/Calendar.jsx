@@ -8,11 +8,12 @@ import {
 } from "../../constants/config";
 import "./Calendar.css";
 
-const Calendar = () => {
+const Calendar = ({ onDateTimeChange, selectedDateTime }) => {
   const [date, setDate] = useState({
-    justDate: null,
-    dateTime: null,
+    justDate: selectedDateTime ? new Date(selectedDateTime) : null,
+    dateTime: selectedDateTime ? new Date(selectedDateTime) : null,
   });
+
   console.log(date.dateTime);
 
   const getTimes = () => {
@@ -29,16 +30,26 @@ const Calendar = () => {
   };
 
   const times = getTimes();
+
+  const handleDateSelect = (selectedDate) => {
+    const newDate = new Date(selectedDate);
+    setDate((prev) => ({ ...prev, justDate: newDate }));
+  };
+
+  const handleTimeSelect = (time) => {
+    const updatedDateTime = new Date(date.justDate); // Use selected date
+    updatedDateTime.setHours(time.getHours(), time.getMinutes()); // Set the selected time
+    setDate((prev) => ({ ...prev, dateTime: updatedDateTime }));
+    onDateTimeChange(updatedDateTime); // Pass the updated dateTime to parent
+  };
+
   return (
     <div>
       {date.justDate ? (
         <div>
           {times?.map((time, i) => (
             <div key={`time-${i}`}>
-              <button
-                onClick={() => setDate((prev) => ({ ...prev, dateTime: time }))}
-                type="button"
-              >
+              <button onClick={() => handleTimeSelect(time)} type="button">
                 {format(time, "kk:mm")}
               </button>
             </div>
@@ -49,9 +60,8 @@ const Calendar = () => {
           className="react-calendar"
           minDate={new Date()}
           view="month"
-          onClickDay={(date) =>
-            setDate((prev) => ({ ...prev, justDate: date }))
-          }
+          onClickDay={handleDateSelect}
+          value={date.justDate}
         />
       )}
     </div>
