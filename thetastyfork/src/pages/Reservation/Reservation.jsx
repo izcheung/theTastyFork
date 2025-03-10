@@ -131,6 +131,11 @@ const Reservation = () => {
                     formik.errors.tableSize}
                 </div>
               </div>
+              <div className="error">
+                {formik.errors.dateTime &&
+                  formik.touched.dateTime &&
+                  formik.errors.dateTime}
+              </div>
               <Button
                 style={{
                   borderRadius: 35,
