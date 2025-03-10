@@ -57,7 +57,7 @@ const Calendar = ({ onDateTimeChange, selectedDateTime }) => {
       />
       <div className="timesWrapper">
         {date.justDate && (
-          <div>
+          <div className="timeBlocks">
             {times?.map((time, i) => (
               <div key={`time-${i}`}>
                 <button
@@ -68,7 +68,7 @@ const Calendar = ({ onDateTimeChange, selectedDateTime }) => {
                       ? "selected-time"
                       : ""
                   }
-                  className={"timeOptions"}
+                  className={"timeButtons"}
                 >
                   {format(time, "kk:mm")}
                 </button>

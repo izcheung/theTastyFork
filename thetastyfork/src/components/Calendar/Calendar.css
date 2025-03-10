@@ -208,20 +208,29 @@
 
 .reservationCalendar {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin-top: 2rem;
     gap: 20px;
 }
 
 .timesWrapper {
     max-height: 500px;
-    max-width: 100%;
-    /* background-color: red; */
     overflow-y: auto;
-    scrollbar-width: thin;
+    max-width: 448px;
 }
 
-.timeOptions {
+.timeBlocks {
+    display: flex;
+    /* justify-content: center; */
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-right: 1rem;
+}
+
+.timeButtons {
     display: flex;
     justify-content: space-between;
     margin-top: 1rem;
