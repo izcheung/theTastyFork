@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import ReactCalendar from "react-calendar";
 import { add, format } from "date-fns";
+import { TextField } from "@mui/material";
 import {
   STORE_OPENING_TIME,
   STORE_CLOSING_TIME,
@@ -46,7 +47,7 @@ const Calendar = ({ onDateTimeChange, selectedDateTime }) => {
   };
 
   return (
-    <div>
+    <div className="reservationCalendar">
       <ReactCalendar
         className="react-calendar"
         minDate={new Date()}
@@ -54,25 +55,28 @@ const Calendar = ({ onDateTimeChange, selectedDateTime }) => {
         onClickDay={handleDateSelect}
         value={date.justDate}
       />
-      {date.justDate && (
-        <div>
-          {times?.map((time, i) => (
-            <div key={`time-${i}`}>
-              <button
-                onClick={() => handleTimeSelect(time)}
-                type="button"
-                className={
-                  selectedTime?.getTime() === time.getTime()
-                    ? "selected-time"
-                    : ""
-                }
-              >
-                {format(time, "kk:mm")}
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+      <div className="timesWrapper">
+        {date.justDate && (
+          <div>
+            {times?.map((time, i) => (
+              <div key={`time-${i}`}>
+                <button
+                  onClick={() => handleTimeSelect(time)}
+                  type="button"
+                  id={
+                    selectedTime?.getTime() === time.getTime()
+                      ? "selected-time"
+                      : ""
+                  }
+                  className={"timeOptions"}
+                >
+                  {format(time, "kk:mm")}
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
