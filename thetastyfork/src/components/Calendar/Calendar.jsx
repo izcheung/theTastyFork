@@ -13,6 +13,7 @@ const Calendar = ({ onDateTimeChange, selectedDateTime }) => {
     justDate: selectedDateTime ? new Date(selectedDateTime) : null,
     dateTime: selectedDateTime ? new Date(selectedDateTime) : null,
   });
+  const [selectedTime, setSelectedTime] = useState(null);
 
   console.log(date.dateTime);
 
@@ -38,6 +39,7 @@ const Calendar = ({ onDateTimeChange, selectedDateTime }) => {
 
   const handleTimeSelect = (time) => {
     const updatedDateTime = new Date(date.justDate); // Use selected date
+    setSelectedTime(time);
     updatedDateTime.setHours(time.getHours(), time.getMinutes()); // Set the selected time
     setDate((prev) => ({ ...prev, dateTime: updatedDateTime }));
     onDateTimeChange(updatedDateTime); // Pass the updated dateTime to parent
@@ -56,7 +58,15 @@ const Calendar = ({ onDateTimeChange, selectedDateTime }) => {
         <div>
           {times?.map((time, i) => (
             <div key={`time-${i}`}>
-              <button onClick={() => handleTimeSelect(time)} type="button">
+              <button
+                onClick={() => handleTimeSelect(time)}
+                type="button"
+                className={
+                  selectedTime?.getTime() === time.getTime()
+                    ? "selected-time"
+                    : ""
+                }
+              >
                 {format(time, "kk:mm")}
               </button>
             </div>

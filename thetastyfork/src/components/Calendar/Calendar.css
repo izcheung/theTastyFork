@@ -203,3 +203,10 @@
 .react-calendar--selectRange .react-calendar__tile--hover {
     background-color: rgb(238 242 255);
 }
+
+.selected-time {
+    background-color: #e2b7b9;
+    color: white;
+    border: #e2b7b9 1px solid;
+    border-radius: 5px;
+}
