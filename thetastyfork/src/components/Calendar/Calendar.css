@@ -223,7 +223,6 @@
 
 .timeBlocks {
     display: flex;
-    /* justify-content: center; */
     flex-direction: row;
     flex-wrap: wrap;
     gap: 10px;
@@ -236,6 +235,7 @@
     margin-top: 1rem;
     background-color: #f0f0f0;
     padding: 1rem;
+    border: none;
     border-radius: 15px;
 }
 
@@ -248,5 +248,5 @@
     background-color: #e2b7b9;
     color: white;
     border: #e2b7b9 1px solid;
-    border-radius: 5px;
+    border-radius: 15px;
 }
