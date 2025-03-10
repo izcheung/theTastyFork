@@ -24,3 +24,15 @@
     flex-direction: column;
     gap: 20px;
 }
+
+#uploadbutton {
+    border: #e2b7b9;
+    font-weight: 700;
+    padding: 1vw 1vw;
+    /* background-color: #e2b7b9; */
+    font-size: max(0.8vw, 10px);
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 50px;
+
+}

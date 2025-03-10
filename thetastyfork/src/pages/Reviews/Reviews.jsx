@@ -9,6 +9,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Input,
 } from "@mui/material";
 import "./Reviews.css";
 
@@ -20,6 +21,7 @@ const Reviews = () => {
       foodRating: "",
       serviceRating: "",
       overallExperience: "",
+      photo: "",
       name: "",
       email: "",
     },
@@ -37,12 +39,17 @@ const Reviews = () => {
       overallExperience: Yup.number().required(
         "Please leave us a rating on the overall experience"
       ),
-
+      photo: Yup.mixed(),
       name: Yup.string(),
       email: Yup.string().email("Invalid email address"),
       reviewContent: Yup.string(),
     }),
   });
+
+  const fileSelectHandler = (event) => {
+    console.log(event.target.files[0]);
+    formik.setFieldValue("photo", event.target.files[0]);
+  };
 
   return (
     <Container>
@@ -142,6 +149,25 @@ const Reviews = () => {
                   </div>
                 </div>
               </div>
+
+              <Button
+                variant="text"
+                component="label"
+                style={{
+                  color: "#e2b7b9",
+
+                  cursor: "pointer",
+                }}
+              >
+                Upload your image
+                <input
+                  type="file"
+                  name="photo"
+                  onChange={fileSelectHandler}
+                  onBlur={formik.handleBlur}
+                  hidden
+                />
+              </Button>
             </div>
           </div>
 
