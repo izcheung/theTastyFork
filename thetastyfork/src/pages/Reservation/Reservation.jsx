@@ -23,7 +23,7 @@ const Reservation = () => {
       dateTime: "",
     },
     onSubmit: (values) => {
-      console.log("Submit", values); // logic to save to backend
+      console.log("Submit", values); // values to save to backend
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
