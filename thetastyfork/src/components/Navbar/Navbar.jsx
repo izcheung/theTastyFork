@@ -4,7 +4,7 @@ import assets from "../../assets/assets";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const [menu, setMenu] = useState("menu");
+  const [menu, setMenu] = useState("home");
   const navigate = useNavigate();
 
   const handleClick = () => {
