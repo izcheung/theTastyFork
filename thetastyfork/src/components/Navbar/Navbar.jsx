@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./navbar.css";
 import assets from "../../assets/assets";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [menu, setMenu] = useState("home");
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleClick = () => {
     navigate("/reservation");
   };
+
+  useEffect(() => {
+    const path = location.pathname.split("/")[1] || "home";
+    setMenu(path);
+  }, [location.pathname]);
 
   return (
     <div className="navbar">
@@ -23,7 +29,6 @@ const Navbar = () => {
 
       <ul className="navbar-menu">
         <li>
-          {/* Use Link component for navigation */}
           <Link
             to="/"
             className={menu === "home" ? "active" : ""}
