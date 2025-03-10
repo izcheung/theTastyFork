@@ -45,7 +45,14 @@ const Calendar = ({ onDateTimeChange, selectedDateTime }) => {
 
   return (
     <div>
-      {date.justDate ? (
+      <ReactCalendar
+        className="react-calendar"
+        minDate={new Date()}
+        view="month"
+        onClickDay={handleDateSelect}
+        value={date.justDate}
+      />
+      {date.justDate && (
         <div>
           {times?.map((time, i) => (
             <div key={`time-${i}`}>
@@ -55,14 +62,6 @@ const Calendar = ({ onDateTimeChange, selectedDateTime }) => {
             </div>
           ))}
         </div>
-      ) : (
-        <ReactCalendar
-          className="react-calendar"
-          minDate={new Date()}
-          view="month"
-          onClickDay={handleDateSelect}
-          value={date.justDate}
-        />
       )}
     </div>
   );
