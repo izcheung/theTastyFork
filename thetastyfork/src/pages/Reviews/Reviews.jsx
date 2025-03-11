@@ -25,8 +25,30 @@ const Reviews = () => {
       name: "",
       email: "",
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log("Submit", values); // logic to save to backend
+      
+      const formData = new FormData();
+      formData.append('reviewTitle', formik.values.reviewTitle);
+      formData.append('foodRating', formik.values.foodRating);
+      formData.append('serviceRating', formik.values.serviceRating);
+      formData.append('overallExperience', formik.values.overallExperience);
+      formData.append('photo', formik.values.photo ? formik.values.photo : null);
+      formData.append('name', formik.values.name);
+      formData.append('email', formik.values.email);
+      formData.append('reviewContent', formik.values.reviewContent);
+    
+      try {
+        const response = await fetch('http://localhost:3000/submitReview', {
+          method: 'POST',
+          body: formData,
+        });
+    
+        const result = await response.json();
+        console.log(result.message);
+      } catch (error) {
+        console.error('Error submitting review:', error);
+      }
     },
     validationSchema: Yup.object({
       reviewTitle: Yup.string().required("Review Title is required"),
