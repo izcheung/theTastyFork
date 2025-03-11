@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join('thetastyfork', 'src')));
 
 app.use('/submitReview', reviewRoutes);
+app.use('/fetchReviews', reviewRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

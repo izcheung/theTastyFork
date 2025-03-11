@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -14,6 +14,21 @@ import {
 import "./Reviews.css";
 
 const Reviews = () => {
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    fetchReviews();
+  }, []);
+
+  const fetchReviews = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/fetchReviews");
+      const data = await response.json();
+      setReviews(data);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    }
+  };
   const formik = useFormik({
     initialValues: {
       reviewTitle: "",
@@ -262,6 +277,23 @@ const Reviews = () => {
             </Button>
           </div>
         </form>
+        <div className="reviews-list">
+          <h2>Customer Reviews</h2>
+          {reviews.length === 0 ? (
+            <p>There is currently no reviews yet. Be the first to leave one!</p>
+          ) : (
+            reviews.map((review) => (
+              <div key={review.reviewId} className="review-card">
+                <h3>{review.reviewTitle}</h3>
+                <p>{review.reviewContent}</p>
+                <p><strong>Food Rating:</strong> {review.foodRating}</p>
+                <p><strong>Service Rating:</strong> {review.serviceRating}</p>
+                <p><strong>Overall Experience:</strong> {review.overallExperience}</p>
+                {review.photoUrl && <img src={review.photoUrl} alt="Review Photo" />}
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </Container>
   );

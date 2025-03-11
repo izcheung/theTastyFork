@@ -59,4 +59,19 @@ router.post('/', upload.single('photo'), async (req, res) => {
   }
 });
 
+router.get('/', async (req, res) => {
+  try {
+    const params = {
+      TableName: REVIEW_TABLE,
+    };
+
+    const data = await dynamoDB.scan(params).promise();
+    console.log(data)
+    res.status(200).json(data.Items);
+  } catch (error) {
+    console.error("Error fetching reviews:", error);
+    res.status(500).json({ message: 'Error fetching reviews' });
+  }
+});
+
 module.exports = router;
