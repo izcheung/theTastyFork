@@ -10,34 +10,32 @@ router.use(cors());
 AWS.config.update(config.awsConfig);
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
-const RESERVATION_TABLE = "Reservations"; 
+const CONTACT_TABLE = "ContactMessages"; 
 
 router.post("/", async (req, res) => {
-  const { name, email, phoneNumber, tableSize, dateTime } = req.body;
+  const { name, email, message } = req.body;
 
-  if (!name || !email || !phoneNumber || !tableSize || !dateTime) {
+  if (!name || !email || !message) {
     return res.status(400).json({ error: "All fields are required." });
   }
 
   const params = {
-    TableName: RESERVATION_TABLE,
+    TableName: CONTACT_TABLE,
     Item: {
       id: new Date().getTime().toString(), 
       name,
       email,
-      phoneNumber,
-      tableSize,
-      dateTime,
+      message,
       createdAt: new Date().toISOString(),
     },
   };
 
   try {
     await dynamoDB.put(params).promise();
-    res.status(201).json({ message: "Reservation booked successfully!" });
+    res.status(201).json({ message: "Message sent successfully!" });
   } catch (error) {
-    console.error("Error saving reservation:", error);
-    res.status(500).json({ error: "Could not save reservation" });
+    console.error("Error saving message:", error);
+    res.status(500).json({ error: "Could not save message" });
   }
 });
 
