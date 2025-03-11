@@ -278,22 +278,22 @@ const Reviews = () => {
           </div>
         </form>
         <div className="reviews-list">
-          <h2>Customer Reviews</h2>
-          {reviews.length === 0 ? (
-            <p>There is currently no reviews yet. Be the first to leave one!</p>
-          ) : (
-            reviews.map((review) => (
-              <div key={review.reviewId} className="review-card">
-                <h3>{review.reviewTitle}</h3>
-                <p>{review.reviewContent}</p>
-                <p><strong>Food Rating:</strong> {review.foodRating}</p>
-                <p><strong>Service Rating:</strong> {review.serviceRating}</p>
-                <p><strong>Overall Experience:</strong> {review.overallExperience}</p>
-                {review.photoUrl && <img src={review.photoUrl} alt="Review Photo" />}
-              </div>
-            ))
-          )}
-        </div>
+        <h2>Customer Reviews</h2>
+        {reviews.length === 0 ? (
+          <p>There are currently no reviews yet. Be the first to leave one!</p>
+        ) : (
+          reviews.map((review) => (
+            <div key={review.reviewId} className="review-card">
+              <h3>{review.reviewTitle}</h3>
+              <p>{review.reviewContent}</p>
+              <p><strong>Food Rating:</strong> {review.foodRating}</p>
+              <p><strong>Service Rating:</strong> {review.serviceRating}</p>
+              <p><strong>Overall Experience:</strong> {review.overallExperience}</p>
+              {review.photoUrl && <img src={review.photoUrl} alt="Review Photo" />}
+            </div>
+          ))
+        )}
+      </div>
       </div>
     </Container>
   );

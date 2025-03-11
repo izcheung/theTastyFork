@@ -22,17 +22,17 @@ router.post('/', upload.single('photo'), async (req, res) => {
 
     let photoUrl = '';
     
-    // if (photo) {
-    //   const uploadParams = {
-    //     Bucket: S3_BUCKET_NAME,
-    //     Key: `reviews/${uuid.v4()}_${photo.originalname}`,
-    //     Body: photo.buffer,
-    //     ContentType: photo.mimetype,
-    //   };
+    if (photo) {
+      const uploadParams = {
+        Bucket: S3_BUCKET_NAME,
+        Key: `reviews/${uuid.v4()}_${photo.originalname}`,
+        Body: photo.buffer,
+        ContentType: photo.mimetype,
+      };
 
-    //   const uploadResult = await s3.upload(uploadParams).promise();
-    //   photoUrl = uploadResult.Location;
-    // }
+      const uploadResult = await s3.upload(uploadParams).promise();
+      photoUrl = uploadResult.Location;
+    }
 
     const reviewItem = {
       TableName: REVIEW_TABLE,
