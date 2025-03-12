@@ -1,18 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Button, TextField, Container } from "@mui/material";
 import "./ContactUs.css";
 
 const ContactUs = () => {
+  const [responseMessage, setResponseMessage] = useState("");
   const formik = useFormik({
     initialValues: {
       name: "",
       email: "",
       message: "",
     },
-    onSubmit: (values) => {
-      console.log("Submit", values); // logic to save to backend
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const response = await fetch("http://localhost:3000/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          setResponseMessage("Message sent successfully!");
+          resetForm();
+        } else {
+          setResponseMessage(`Error: ${data.error}`);
+        }
+      } catch (error) {
+        console.error("Error submitting contact form:", error);
+        setResponseMessage("Failed to send message. Please try again later.");
+      }
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
