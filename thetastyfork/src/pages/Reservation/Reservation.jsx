@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useFormik } from "formik";
 import "./Reservation.css";
 import Calendar from "../../components/Calendar/Calendar";
@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 
 const Reservation = () => {
+  const [responseMessage, setResponseMessage] = useState(""); // Store response from backend
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -22,8 +23,25 @@ const Reservation = () => {
       tableSize: "",
       dateTime: "",
     },
-    onSubmit: (values) => {
-      console.log("Submit", values); // values to save to backend
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const response = await fetch("http://localhost:3000/api/reservations", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          setResponseMessage("Reservation booked successfully!");
+          resetForm();
+        } else {
+          setResponseMessage(`Error: ${data.error}`);
+        }
+      } catch (error) {
+        console.error("Error submitting reservation form:", error);
+        setResponseMessage("Failed to book reservation. Please try again later.");
+      }
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
