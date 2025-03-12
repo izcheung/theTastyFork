@@ -13,11 +13,26 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const sns = new AWS.SNS();
 const RESERVATION_TABLE = config.reservationTable;
 
+// Function to validate phone number format
+const formatPhoneNumber = (phoneNumber) => {
+  if (!phoneNumber.startsWith("+")) {
+    console.error("Invalid phone number format. Must start with + and country code.");
+    return null; // Invalid format
+  }
+  return phoneNumber;
+};
+
 router.post("/", async (req, res) => {
   const { name, email, phoneNumber, tableSize, dateTime } = req.body;
 
   if (!name || !email || !phoneNumber || !tableSize || !dateTime) {
     return res.status(400).json({ error: "All fields are required." });
+  }
+
+  // Validate and format phone number
+  const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
+  if (!formattedPhoneNumber) {
+    return res.status(400).json({ error: "Invalid phone number format. Use +1234567890 format." });
   }
 
   const params = {
@@ -38,7 +53,7 @@ router.post("/", async (req, res) => {
     await dynamoDB.put(params).promise();
 
     // SNS Message Content
-    const message = `Hello ${name}, your reservation for ${tableSize} people on ${dateTime} has been confirmed. Thank you!`;
+    const message = `The Tasty Fork: Hi ${name}, your reservation for ${tableSize} people on ${dateTime} has been confirmed. Thank you!`;
     
     // Send SNS Notification
     const snsParams = {
