@@ -10,7 +10,7 @@ router.use(cors());
 AWS.config.update(config.awsConfig);
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
-const CONTACT_TABLE = "ContactMessages"; 
+const CONTACT_TABLE = config.contactTable;
 
 router.post("/", async (req, res) => {
   const { name, email, message } = req.body;

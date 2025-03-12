@@ -10,7 +10,7 @@ router.use(cors());
 AWS.config.update(config.awsConfig);
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
-const RESERVATION_TABLE = "Reservations"; 
+const RESERVATION_TABLE = config.reservationTable;
 
 router.post("/", async (req, res) => {
   const { name, email, phoneNumber, tableSize, dateTime } = req.body;

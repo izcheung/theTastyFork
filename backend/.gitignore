@@ -26,3 +26,6 @@ dist-ssr
 
 # config file for aws credentials
 config.js
+
+# environment variables
+.env
