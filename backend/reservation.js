@@ -1,3 +1,5 @@
+const { format } = require("date-fns");
+
 const express = require("express");
 const AWS = require("aws-sdk");
 const cors = require("cors");
@@ -24,6 +26,9 @@ const formatPhoneNumber = (phoneNumber) => {
 
 router.post("/", async (req, res) => {
   const { name, email, phoneNumber, tableSize, dateTime } = req.body;
+
+  // Convert dateTime to human-readable format
+  const formattedDate = format(new Date(dateTime), "MMMM do, yyyy 'at' h:mm a");
 
   if (!name || !email || !phoneNumber || !tableSize || !dateTime) {
     return res.status(400).json({ error: "All fields are required." });
@@ -53,12 +58,12 @@ router.post("/", async (req, res) => {
     await dynamoDB.put(params).promise();
 
     // SNS Message Content
-    const message = `The Tasty Fork: Hi ${name}, your reservation for ${tableSize} people on ${dateTime} has been confirmed. Thank you!`;
+    const message = `The Tasty Fork: Hi ${name}, your reservation for ${tableSize} people on ${formattedDate} has been confirmed. Thank you!`;
     
     // Send SNS Notification
     const snsParams = {
       Message: message,
-      PhoneNumber: phoneNumber, // Replace with valid phone number format
+      PhoneNumber: phoneNumber, 
     };
 
     await sns.publish(snsParams).promise();
