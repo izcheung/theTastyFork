@@ -15,7 +15,7 @@ const s3 = new AWS.S3();
 const REVIEW_TABLE = 'Reviews';
 const S3_BUCKET_NAME = 'comp3962-milestone-review-bucket';
 
-router.post('/', upload.single('photo'), async (req, res) => {
+router.post('/submit', upload.single('photo'), async (req, res) => {
   try {
     const { reviewTitle, foodRating, serviceRating, overallExperience, name, email, reviewContent } = req.body;
     const photo = req.file;
@@ -59,7 +59,7 @@ router.post('/', upload.single('photo'), async (req, res) => {
   }
 });
 
-router.get('/', async (req, res) => {
+router.get('/fetch', async (req, res) => {
   try {
     const params = {
       TableName: REVIEW_TABLE,
