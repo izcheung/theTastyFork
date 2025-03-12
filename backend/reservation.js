@@ -10,6 +10,7 @@ router.use(cors());
 AWS.config.update(config.awsConfig);
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
+const sns = new AWS.SNS();
 const RESERVATION_TABLE = config.reservationTable;
 
 router.post("/", async (req, res) => {
@@ -33,11 +34,38 @@ router.post("/", async (req, res) => {
   };
 
   try {
+    // Save reservation in DynamoDB
     await dynamoDB.put(params).promise();
-    res.status(201).json({ message: "Reservation booked successfully!" });
+
+    // SNS Message Content
+    const message = `Hello ${name}, your reservation for ${tableSize} people on ${dateTime} has been confirmed. Thank you!`;
+    
+    // Send SNS Notification
+    const snsParams = {
+      Message: message,
+      PhoneNumber: phoneNumber, // Replace with valid phone number format
+    };
+
+    await sns.publish(snsParams).promise();
+
+    res.status(201).json({ message: "Reservation booked successfully & notification sent!" });
   } catch (error) {
-    console.error("Error saving reservation:", error);
-    res.status(500).json({ error: "Could not save reservation" });
+    console.error("Error saving reservation or sending SNS:", error);
+    res.status(500).json({ error: "Could not save reservation or send notification" });
+  }
+});
+
+router.get("/", async (req, res) => {
+  const params = {
+    TableName: RESERVATION_TABLE,
+  };
+
+  try {
+    const data = await dynamoDB.scan(params).promise();
+    res.status(200).json(data.Items);
+  } catch (error) {
+    console.error("Error fetching reservations:", error);
+    res.status(500).json({ error: "Could not fetch reservations" });
   }
 });
 
