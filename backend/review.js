@@ -12,8 +12,8 @@ AWS.config.update(config.awsConfig);
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const s3 = new AWS.S3();
 
-const REVIEW_TABLE = 'Reviews';
-const S3_BUCKET_NAME = 'comp3962-milestone-review-bucket';
+const REVIEW_TABLE = config.reviewTable;
+const S3_BUCKET_NAME = config.s3Bucket;
 
 router.post('/submit', upload.single('photo'), async (req, res) => {
   try {
