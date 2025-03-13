@@ -14,7 +14,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join('thetastyfork', 'src')));
 
-app.use('/api/reviews', reviewRoutes);
+app.use('/submitReview', reviewRoutes);
+app.use('/fetchReviews', reviewRoutes);
 app.use("/api/reservations", reservationRoutes);
 app.use("/api/contact", contactRoutes);
 

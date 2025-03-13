@@ -22,7 +22,7 @@ const Reviews = () => {
 
   const fetchReviews = async () => {
     try {
-      const response = await fetch("http://localhost:3000/reviews/fetch");
+      const response = await fetch("http://localhost:3000/fetchReviews");
       const data = await response.json();
       setReviews(data);
     } catch (error) {
@@ -54,7 +54,7 @@ const Reviews = () => {
       formData.append('reviewContent', formik.values.reviewContent);
     
       try {
-        const response = await fetch('http://localhost:3000/api/reviews/submit', {
+        const response = await fetch('http://localhost:3000/api/submitReviews/', {
           method: 'POST',
           body: formData,
         });
