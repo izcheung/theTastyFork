@@ -54,7 +54,7 @@ const Reviews = () => {
       formData.append('reviewContent', formik.values.reviewContent);
     
       try {
-        const response = await fetch('http://localhost:3000/api/submitReviews/', {
+        const response = await fetch('http://localhost:3000/submitReview/', {
           method: 'POST',
           body: formData,
         });
