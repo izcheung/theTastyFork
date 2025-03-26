@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
 
     // 2. Publish email notification via SNS
     const snsParams = {
-      Message: `New Contact Submission\n\nName: ${name}\nEmail: ${email}\nMessage:\n${message}`,
+      Message: `The Tasty Fork\n\nName: ${name}\nEmail: ${email}\nMessage:\n${message}`,
       Subject: `New Contact Form Submission from ${name}`,
       TopicArn: CONTACT_TOPIC_ARN,
     };
