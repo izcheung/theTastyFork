@@ -47,12 +47,13 @@ router.delete("/:id", async (req, res) => {
       }
   
       const reservation = data.Item;
+      const formattedDate = format(new Date(reservation.dateTime), "MMMM do, yyyy 'at' h:mm a");
   
       // 2. Delete the reservation
       await dynamoDB.delete(getParams).promise();
   
       // 3. Send SMS to the user
-      const cancelMessage = `The Tasty Fork: Hi ${reservation.name}, your reservation on ${reservation.dateTime} has been canceled by the restaurant.`;
+      const cancelMessage = `The Tasty Fork: Hi ${reservation.name}, your reservation on ${formattedDate} has been canceled by the restaurant. Please contact us if you have any questions.`;
   
       await sns
         .publish({
