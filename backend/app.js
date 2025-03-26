@@ -16,6 +16,7 @@ app.use(express.static(path.join('thetastyfork', 'src')));
 
 app.use('/submitReview', reviewRoutes);
 app.use('/fetchReviews', reviewRoutes);
+app.use('/admin/contact', contactRoutes);
 app.use("/api/reservations", reservationRoutes);
 app.use("/api/contact", contactRoutes);
 
