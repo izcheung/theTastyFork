@@ -39,4 +39,19 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get('/', async (req, res) => {
+  try {
+    const params = {
+      TableName: CONTACT_TABLE,
+    };
+
+    const data = await dynamoDB.scan(params).promise();
+    console.log(data)
+    res.status(200).json(data.Items);
+  } catch (error) {
+    console.error("Error fetching contact data:", error);
+    res.status(500).json({ message: 'Error fetching contact data' });
+  }
+});
+
 module.exports = router;
