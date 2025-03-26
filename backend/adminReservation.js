@@ -2,6 +2,7 @@ const { format } = require("date-fns");
 
 const express = require("express");
 const AWS = require("aws-sdk");
+const cors = require("cors");
 require("dotenv").config();
 const config = require("./config");
 
@@ -123,3 +124,4 @@ router.delete("/:id", async (req, res) => {
     }
   });
   
+  module.exports = router;

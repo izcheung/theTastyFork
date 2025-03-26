@@ -11,6 +11,8 @@ AWS.config.update(config.awsConfig);
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const CONTACT_TABLE = config.contactTable;
+const sns = new AWS.SNS();
+const CONTACT_TOPIC_ARN = config.snsTopicArn;
 
 router.post("/", async (req, res) => {
   const { name, email, message } = req.body;
@@ -32,6 +34,16 @@ router.post("/", async (req, res) => {
 
   try {
     await dynamoDB.put(params).promise();
+
+    // 2. Publish email notification via SNS
+    const snsParams = {
+      Message: `New Contact Submission\n\nName: ${name}\nEmail: ${email}\nMessage:\n${message}`,
+      Subject: `New Contact Form Submission from ${name}`,
+      TopicArn: CONTACT_TOPIC_ARN,
+    };
+
+    await sns.publish(snsParams).promise();
+
     res.status(201).json({ message: "Message sent successfully!" });
   } catch (error) {
     console.error("Error saving message:", error);
