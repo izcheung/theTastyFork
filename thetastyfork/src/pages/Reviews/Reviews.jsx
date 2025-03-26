@@ -61,6 +61,9 @@ const Reviews = () => {
     
         const result = await response.json();
         console.log(result.message);
+        if (response.ok) {
+          window.location.reload();
+        }
       } catch (error) {
         console.error('Error submitting review:', error);
       }
