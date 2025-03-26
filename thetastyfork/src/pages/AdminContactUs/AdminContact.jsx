@@ -19,7 +19,8 @@ const AdminContacts = () => {
         throw new Error("Failed to fetch contacts");
       }
       const data = await response.json();
-      setContacts(data);
+      const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setContacts(sortedData);
     } catch (error) {
       console.error("Error fetching contact messages:", error);
     }
@@ -32,9 +33,21 @@ const AdminContacts = () => {
   return (
     <Container>
       <h1 id="contact-us-title">User Contact Messages</h1>
-      <div justify-content="center">
+      <div style={{
+        display: "flex",
+        justifyContent: "center",
+        marginTop: "20px",
+      }}>
         <Button
-          variant="contained"
+          style={{
+            borderRadius: 35,
+            color: "white",
+            border: "white",
+            backgroundColor: "#e2b7b9",
+            padding: "12px 20px",
+            fontSize: "13px",
+          }}
+          variant="outlined"
           onClick={handleRefresh}
         >
           Refresh
