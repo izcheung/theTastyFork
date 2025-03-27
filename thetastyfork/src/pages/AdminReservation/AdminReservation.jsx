@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Container } from "@mui/material";
 import "./AdminReservations.css";
 
-const AdminReservations = () => {
+const AdminReservation = () => {
   const [reservations, setReservations] = useState([]);
 
   useEffect(() => {
@@ -101,4 +101,4 @@ const AdminReservations = () => {
   );
 };
 
-export default AdminReservations;
+export default AdminReservation;
