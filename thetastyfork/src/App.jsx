@@ -8,6 +8,7 @@ import Menu from "./pages/Menu/Menu";
 import ContactUs from "./pages/ContactUs/ContactUs";
 import Reservation from "./pages/Reservation/Reservation";
 import AdminContacts from "./pages/AdminContactUs/AdminContact";
+import AdminReservation from "./pages/AdminReservation/AdminReservation";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/contactus" element={<ContactUs />} />
           <Route path="/reservation" element={<Reservation />} />
           <Route path="/admin/contact" element={<AdminContacts />} />
+          <Route path="/admin/reservations" element={<AdminReservation />} />
         </Routes>
       </div>
       {/* <Footer /> */}
