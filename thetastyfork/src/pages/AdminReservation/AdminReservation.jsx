@@ -5,10 +5,6 @@ import "./AdminReservations.css";
 const AdminReservation = () => {
   const [reservations, setReservations] = useState([]);
 
-  useEffect(() => {
-    fetchReservations();
-  }, []);
-
   const fetchReservations = async () => {
     try {
       const response = await fetch(
@@ -18,13 +14,11 @@ const AdminReservation = () => {
         throw new Error("Failed to fetch reservations");
       }
       const data = await response.json();
-    
-      const formattedData = () => {
-        setReservations({
-          ...data,
-          formattedDate: formatDateTime(data.dateTime)
-        });
-      };
+
+      const formattedData = data.map((reservation) => ({
+        ...reservation,
+        formattedDate: formatDateTime(reservation.dateTime),
+      }));
       setReservations(formattedData);
     } catch (error) {
       console.error("Error fetching reservation messages:", error);
@@ -48,6 +42,10 @@ const AdminReservation = () => {
   const handleRefresh = () => {
     fetchReservations();
   };
+
+  useEffect(() => {
+    fetchReservations();
+  }, [fetchReservations, reservations]);
 
   return (
     <Container>
@@ -76,7 +74,7 @@ const AdminReservation = () => {
       </div>
       <div>
         <div className="reservation-list">
-          <h2>Messages</h2>
+          <h2>Reservations</h2>
           {reservations.length === 0 ? (
             <p>There are currently no reservations yet.</p>
           ) : (
