@@ -17,11 +17,14 @@ const AdminReservation = () => {
       if (!response.ok) {
         throw new Error("Failed to fetch reservations");
       }
-      const formattedData = data.map((reservation) => ({
-        ...reservation,
-        formattedDateTime: formatDateTime(reservation.dateTime),
-      }));
       const data = await response.json();
+    
+      const formattedData = () => {
+        setReservations({
+          ...data,
+          formattedDate: formatDateTime(data.dateTime)
+        });
+      };
       setReservations(formattedData);
     } catch (error) {
       console.error("Error fetching reservation messages:", error);
