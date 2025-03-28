@@ -41,13 +41,10 @@ const AdminReservation = () => {
     return `${month}. ${day}, ${year} at ${hours}${ampm}`;
   };
 
-  const handleRefresh = () => {
-    fetchReservations();
-  };
-
   useEffect(() => {
     fetchReservations();
   }, []);
+
   const deleteReservation = async (reservationId) => {
     try {
       const response = await fetch(
@@ -87,24 +84,11 @@ const AdminReservation = () => {
           marginTop: "20px",
         }}
       >
-        <Button
-          style={{
-            borderRadius: 35,
-            color: "white",
-            border: "white",
-            backgroundColor: "#e2b7b9",
-            padding: "12px 20px",
-            fontSize: "13px",
-          }}
-          variant="outlined"
-          onClick={handleRefresh}
-        >
-          Refresh
-        </Button>
+        
       </div>
       <div>
         <div className="reservation-list">
-          <h2>Reservations</h2>
+
           {reservations.length === 0 ? (
             <p>There are currently no reservations yet.</p>
           ) : (
