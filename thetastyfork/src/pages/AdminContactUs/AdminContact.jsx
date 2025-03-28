@@ -20,14 +20,31 @@ const AdminContacts = () => {
       }
       const data = await response.json();
       const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-      setContacts(sortedData);
+      const formattedData = sortedData.map((message) => ({
+        ...message,
+        formattedDate: formatDateTime(message.createdAt),
+      }));
+      console.log(formattedData)
+      setContacts(formattedData);
     } catch (error) {
       console.error("Error fetching contact messages:", error);
     }
   };
 
-  const handleRefresh = () => {
-    fetchContacts();
+
+  const formatDateTime = (dateStr) => {
+    const dateObj = new Date(dateStr);
+  
+    const month = dateObj.toLocaleString("en-US", { month: "long" });
+    const day = dateObj.getUTCDate(); // use getDate() if local time
+    const year = dateObj.getUTCFullYear();
+  
+    let hours = dateObj.getUTCHours(); // use getHours() if local time
+    const minutes = dateObj.getUTCMinutes();
+    const ampm = hours >= 12 ? "pm" : "am";
+    hours = hours % 12 || 12;
+  
+    return `${month}. ${day}, ${year} at ${hours}${ampm}`;
   };
 
   return (
@@ -38,7 +55,7 @@ const AdminContacts = () => {
         justifyContent: "center",
         marginTop: "20px",
       }}>
-        <Button
+        {/* <Button
           style={{
             borderRadius: 35,
             color: "white",
@@ -51,11 +68,11 @@ const AdminContacts = () => {
           onClick={handleRefresh}
         >
           Refresh
-        </Button>
+        </Button> */}
       </div>
       <div>
         <div className="contact-list">
-          <h2>Messages</h2>
+
           {contacts.length === 0 ? (
             <p>There are currently no contact messages yet.</p>
           ) : (
@@ -64,7 +81,7 @@ const AdminContacts = () => {
                 <h3>{contact.name}</h3>
                 <p>{contact.email}</p>
                 <p><strong>User Message:</strong> {contact.message}</p>
-                <p><strong>Created At:</strong> {contact.createdAt}</p>
+                <p><strong>Created At:</strong> {contact.formattedDate}</p>
               </div>
             ))
           )}
