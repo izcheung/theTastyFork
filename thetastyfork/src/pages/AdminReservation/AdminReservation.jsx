@@ -15,11 +15,12 @@ const AdminReservation = () => {
       }
       const data = await response.json();
 
-      const formattedData = data.map((reservation) => ({
+      const formattedData = data.data.map((reservation) => ({
         ...reservation,
         formattedDate: formatDateTime(reservation.dateTime),
       }));
       setReservations(formattedData);
+     
     } catch (error) {
       console.error("Error fetching reservation messages:", error);
     }
@@ -27,16 +28,17 @@ const AdminReservation = () => {
 
   const formatDateTime = (dateStr) => {
     const dateObj = new Date(dateStr);
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-      timeZone: "UTC", // Change timezone if needed
-    };
-    return dateObj.toLocaleString("en-US", options);
+  
+    const month = dateObj.toLocaleString("en-US", { month: "long" });
+    const day = dateObj.getUTCDate(); // use getDate() if local time
+    const year = dateObj.getUTCFullYear();
+  
+    let hours = dateObj.getUTCHours(); // use getHours() if local time
+    const minutes = dateObj.getUTCMinutes();
+    const ampm = hours >= 12 ? "pm" : "am";
+    hours = hours % 12 || 12;
+  
+    return `${month}. ${day}, ${year} at ${hours}${ampm}`;
   };
 
   const handleRefresh = () => {
@@ -45,7 +47,35 @@ const AdminReservation = () => {
 
   useEffect(() => {
     fetchReservations();
-  }, [fetchReservations, reservations]);
+  }, []);
+  const deleteReservation = async (reservationId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/admin/reservations/${reservationId}`,
+        {
+          method: "DELETE",
+        }
+      );
+  
+      const result = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to delete reservation");
+      }
+  
+      // Remove from frontend list
+      setReservations((prev) =>
+        prev.filter((reservation) => reservation.id !== reservationId)
+      );
+  
+      alert("Reservation deleted successfully.");
+    } catch (error) {
+      console.error("Delete error:", error);
+      alert("Failed to delete reservation.");
+    }
+  };
+  
+  
 
   return (
     <Container>
@@ -90,9 +120,14 @@ const AdminReservation = () => {
                   <strong>Phone number:</strong> {reservation.phoneNumber}
                 </p>
                 <p>
-                  <strong>Reservation time:</strong>{" "}
-                  {reservation.formattedDateTime}
+                  <strong>Table Size:</strong> {reservation.tableSize}
                 </p>
+                <p>
+                  <strong>Reservation time:</strong>{" "}
+                  {reservation.formattedDate}
+                </p>
+                <Button onClick={() => deleteReservation(reservation.id)}>Delete Reservation</Button>
+
               </div>
             ))
           )}
