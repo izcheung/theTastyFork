@@ -8,7 +8,7 @@ const AdminReservation = () => {
   const fetchReservations = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/admin/reservations"
+        "/api/admin/reservations"
       );
       if (!response.ok) {
         throw new Error("Failed to fetch reservations");
@@ -48,7 +48,7 @@ const AdminReservation = () => {
   const deleteReservation = async (reservationId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/admin/reservations/${reservationId}`,
+        `api/admin/reservations/${reservationId}`,
         {
           method: "DELETE",
         }
