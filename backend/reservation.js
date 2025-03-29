@@ -27,12 +27,17 @@ const formatPhoneNumber = (phoneNumber) => {
 router.post("/", async (req, res) => {
   const { name, email, phoneNumber, tableSize, dateTime } = req.body;
 
-  // Convert dateTime to human-readable format
-  const formattedDate = format(new Date(dateTime), "MMMM do, yyyy 'at' h:mm a");
-
   if (!name || !email || !phoneNumber || !tableSize || !dateTime) {
     return res.status(400).json({ error: "All fields are required." });
   }
+  
+  // ✅ Validate date
+  const parsedDate = new Date(dateTime);
+  if (isNaN(parsedDate.getTime())) {
+    return res.status(400).json({ error: "Invalid date format." });
+  }
+  const formattedDate = format(parsedDate, "MMMM do, yyyy 'at' h:mm a");
+
 
   // Validate and format phone number
   const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
