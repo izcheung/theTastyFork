@@ -9,12 +9,12 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Input,
 } from "@mui/material";
 import "./Reviews.css";
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
+  const [sortOrder, setSortOrder] = useState(null); // Add state to track sort order
 
   useEffect(() => {
     fetchReviews();
@@ -29,6 +29,19 @@ const Reviews = () => {
       console.error("Error fetching reviews:", error);
     }
   };
+
+  const sortReviews = (order) => {
+    let sortedReviews = [...reviews];
+    if (order === "asc") {
+      // Sort in ascending order based on overall rating
+      sortedReviews.sort((a, b) => a.overallExperience - b.overallExperience);
+    } else if (order === "desc") {
+      // Sort in descending order based on overall rating
+      sortedReviews.sort((a, b) => b.overallExperience - a.overallExperience);
+    }
+    setReviews(sortedReviews); // Update state with sorted reviews
+  };
+
   const formik = useFormik({
     initialValues: {
       reviewTitle: "",
@@ -41,8 +54,8 @@ const Reviews = () => {
       email: "",
     },
     onSubmit: async (values) => {
-      console.log("Submit", values); // logic to save to backend
-      
+      console.log("Submit", values);
+
       const formData = new FormData();
       formData.append('reviewTitle', formik.values.reviewTitle);
       formData.append('foodRating', formik.values.foodRating);
@@ -52,13 +65,13 @@ const Reviews = () => {
       formData.append('name', formik.values.name);
       formData.append('email', formik.values.email);
       formData.append('reviewContent', formik.values.reviewContent);
-    
+
       try {
         const response = await fetch('http://localhost:3000/submitReview/', {
           method: 'POST',
           body: formData,
         });
-    
+
         const result = await response.json();
         console.log(result.message);
         if (response.ok) {
@@ -87,7 +100,6 @@ const Reviews = () => {
   });
 
   const fileSelectHandler = (event) => {
-    console.log(event.target.files[0]);
     formik.setFieldValue("photo", event.target.files[0]);
   };
 
@@ -119,7 +131,7 @@ const Reviews = () => {
                 <div>
                   <FormControl fullWidth>
                     <InputLabel>
-                      "How would you rate the quality of the food? (5 is best)
+                      How would you rate the quality of the food? (5 is best)
                     </InputLabel>
                     <Select
                       name="foodRating"
@@ -195,7 +207,6 @@ const Reviews = () => {
                 component="label"
                 style={{
                   color: "#e2b7b9",
-
                   cursor: "pointer",
                 }}
               >
@@ -238,7 +249,6 @@ const Reviews = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-
               <div className="error">
                 {formik.errors.email &&
                   formik.touched.email &&
@@ -280,23 +290,57 @@ const Reviews = () => {
             </Button>
           </div>
         </form>
+
         <div className="reviews-list">
-        <h2>Customer Reviews</h2>
-        {reviews.length === 0 ? (
-          <p>There are currently no reviews yet. Be the first to leave one!</p>
-        ) : (
-          reviews.map((review) => (
-            <div key={review.reviewId} className="review-card">
-              <h3>{review.reviewTitle}</h3>
-              <p>{review.reviewContent}</p>
-              <p><strong>Food Rating:</strong> {review.foodRating}</p>
-              <p><strong>Service Rating:</strong> {review.serviceRating}</p>
-              <p><strong>Overall Experience:</strong> {review.overallExperience}</p>
-              {review.photoUrl && <img src={review.photoUrl} alt="Review Photo" />}
-            </div>
-          ))
-        )}
-      </div>
+          <h2>Customer Reviews</h2>
+          
+          {/* Sorting Buttons */}
+          <div style={{ margin: "20px", display: "flex", gap: "20px" }}>
+            <Button
+              onClick={() => sortReviews("asc")}
+              style={{
+                borderRadius: 10,
+                color: "#e2b7b9", 
+                border: "2px solid #e2b7b9", 
+                backgroundColor: "white",
+                padding: "18px 25px",
+                fontSize: "18px",
+              }}
+              variant="outlined"
+            >
+              Lowest Rating
+            </Button>
+            <Button
+              style={{
+                borderRadius: 10,
+                color: "#e2b7b9", 
+                border: "2px solid #e2b7b9", 
+                backgroundColor: "white",
+                padding: "18px 25px",
+                fontSize: "18px",
+              }}
+              variant="outlined"
+              onClick={() => sortReviews("desc")}
+            >
+              Highest Rating
+            </Button>
+          </div>
+
+          {reviews.length === 0 ? (
+            <p>There are currently no reviews yet. Be the first to leave one!</p>
+          ) : (
+            reviews.map((review) => (
+              <div key={review.reviewId} className="review-card">
+                <h3>{review.reviewTitle}</h3>
+                <p>{review.reviewContent}</p>
+                <p><strong>Food Rating:</strong> {review.foodRating}</p>
+                <p><strong>Service Rating:</strong> {review.serviceRating}</p>
+                <p><strong>Overall Experience:</strong> {review.overallExperience}</p>
+                {review.photoUrl && <img src={review.photoUrl} alt="Review Photo" />}
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </Container>
   );
