@@ -48,7 +48,7 @@ const AdminReservation = () => {
   const deleteReservation = async (reservationId) => {
     try {
       const response = await fetch(
-        `api/admin/reservations/${reservationId}`,
+        `/api/admin/reservations/${reservationId}`,
         {
           method: "DELETE",
         }
