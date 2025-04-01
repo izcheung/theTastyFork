@@ -1,10 +1,10 @@
-const { format } = require("date-fns-tz");
+const { formatInTimeZone } = require("date-fns-tz");
 
 const express = require("express");
 const AWS = require("aws-sdk");
 const cors = require("cors");
 require("dotenv").config();
-const config = require('./config');
+const config = require("./config");
 
 const router = express.Router();
 router.use(cors());
@@ -18,7 +18,9 @@ const RESERVATION_TABLE = config.reservationTable;
 // Function to validate phone number format
 const formatPhoneNumber = (phoneNumber) => {
   if (!phoneNumber.startsWith("+")) {
-    console.error("Invalid phone number format. Must start with + and country code.");
+    console.error(
+      "Invalid phone number format. Must start with + and country code."
+    );
     return null; // Invalid format
   }
   return phoneNumber;
@@ -40,13 +42,23 @@ router.post("/", async (req, res) => {
   const pdtZone = "America/Los_Angeles";
 
   // Convert and store dateTime as PDT
-  const pdtDateTime = formatInTimeZone(parsedDate, pdtZone, "yyyy-MM-dd'T'HH:mm:ssXXX");
+  const pdtDateTime = formatInTimeZone(
+    parsedDate,
+    pdtZone,
+    "yyyy-MM-dd'T'HH:mm:ssXXX"
+  );
 
   // For SMS message formatting
-  const formattedDate = formatInTimeZone(parsedDate, pdtZone, "MMMM do, yyyy 'at' h:mm a zzz");
+  const formattedDate = formatInTimeZone(
+    parsedDate,
+    pdtZone,
+    "MMMM do, yyyy 'at' h:mm a zzz"
+  );
   const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
   if (!formattedPhoneNumber) {
-    return res.status(400).json({ error: "Invalid phone number format. Use +1234567890 format." });
+    return res
+      .status(400)
+      .json({ error: "Invalid phone number format. Use +1234567890 format." });
   }
 
   try {
@@ -64,40 +76,48 @@ router.post("/", async (req, res) => {
 
     const existing = await dynamoDB.scan(checkParams).promise();
     if (existing.Items.length >= 5) {
-      return res.status(400).json({ error: "Sorry, this time slot is fully booked." });
+      return res
+        .status(400)
+        .json({ error: "Sorry, this time slot is fully booked." });
     }
 
-  const params = {
-    TableName: RESERVATION_TABLE,
-    Item: {
-      id: new Date().getTime().toString(), 
-      name,
-      email,
-      phoneNumber,
-      tableSize,
-      dateTime: pdtDateTime, // Store PDT time
-      createdAt: new Date().toISOString(),
-    },
-  };
+    const params = {
+      TableName: RESERVATION_TABLE,
+      Item: {
+        id: new Date().getTime().toString(),
+        name,
+        email,
+        phoneNumber,
+        tableSize,
+        dateTime: pdtDateTime, // Store PDT time
+        createdAt: new Date().toISOString(),
+      },
+    };
 
     // Save reservation in DynamoDB
     await dynamoDB.put(params).promise();
 
     // SNS Message Content
     const message = `The Tasty Fork: Hi ${name}, your reservation for ${tableSize} people on ${formattedDate} has been confirmed. Thank you!`;
-    
+
     // Send SNS Notification
     const snsParams = {
       Message: message,
-      PhoneNumber: phoneNumber, 
+      PhoneNumber: phoneNumber,
     };
 
     await sns.publish(snsParams).promise();
 
-    res.status(201).json({ message: "Reservation booked successfully & notification sent!" });
+    res
+      .status(201)
+      .json({
+        message: "Reservation booked successfully & notification sent!",
+      });
   } catch (error) {
     console.error("Error saving reservation or sending SNS:", error);
-    res.status(500).json({ error: "Could not save reservation or send notification" });
+    res
+      .status(500)
+      .json({ error: "Could not save reservation or send notification" });
   }
 });
 
