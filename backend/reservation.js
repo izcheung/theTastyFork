@@ -1,4 +1,4 @@
-const { format } = require("date-fns");
+const { format } = require("date-fns-tz");
 
 const express = require("express");
 const AWS = require("aws-sdk");
@@ -37,7 +37,13 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: "Invalid date format." });
   }
 
-  const formattedDate = format(parsedDate, "MMMM do, yyyy 'at' h:mm a");
+  const pdtZone = "America/Los_Angeles";
+
+  // Convert and store dateTime as PDT
+  const pdtDateTime = formatInTimeZone(parsedDate, pdtZone, "yyyy-MM-dd'T'HH:mm:ssXXX");
+
+  // For SMS message formatting
+  const formattedDate = formatInTimeZone(parsedDate, pdtZone, "MMMM do, yyyy 'at' h:mm a zzz");
   const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
   if (!formattedPhoneNumber) {
     return res.status(400).json({ error: "Invalid phone number format. Use +1234567890 format." });
@@ -69,7 +75,7 @@ router.post("/", async (req, res) => {
       email,
       phoneNumber,
       tableSize,
-      dateTime,
+      dateTime: pdtDateTime, // Store PDT time
       createdAt: new Date().toISOString(),
     },
   };
