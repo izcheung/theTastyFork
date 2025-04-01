@@ -1,6 +1,7 @@
 const express = require("express");
 const AWS = require("aws-sdk");
 const cors = require("cors");
+const { formatInTimeZone } = require("date-fns-tz"); 
 require("dotenv").config();
 const config = require('./config');
 
@@ -20,6 +21,8 @@ router.post("/", async (req, res) => {
   if (!name || !email || !message) {
     return res.status(400).json({ error: "All fields are required." });
   }
+  const pdtZone = "America/Los_Angeles";
+  const createdAt = formatInTimeZone(new Date(), pdtZone, "yyyy-MM-dd'T'HH:mm:ssXXX");
 
   const params = {
     TableName: CONTACT_TABLE,
@@ -28,7 +31,7 @@ router.post("/", async (req, res) => {
       name,
       email,
       message,
-      createdAt: new Date().toISOString(),
+      createdAt,
     },
   };
 
