@@ -30,20 +30,36 @@ router.post("/", async (req, res) => {
   if (!name || !email || !phoneNumber || !tableSize || !dateTime) {
     return res.status(400).json({ error: "All fields are required." });
   }
-  
+
   // ✅ Validate date
   const parsedDate = new Date(dateTime);
   if (isNaN(parsedDate.getTime())) {
     return res.status(400).json({ error: "Invalid date format." });
   }
+
   const formattedDate = format(parsedDate, "MMMM do, yyyy 'at' h:mm a");
-
-
-  // Validate and format phone number
   const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
   if (!formattedPhoneNumber) {
     return res.status(400).json({ error: "Invalid phone number format. Use +1234567890 format." });
   }
+
+  try {
+    // Check for existing reservations at the same dateTime
+    const checkParams = {
+      TableName: RESERVATION_TABLE,
+      FilterExpression: "#dt = :dateTimeVal",
+      ExpressionAttributeNames: {
+        "#dt": "dateTime",
+      },
+      ExpressionAttributeValues: {
+        ":dateTimeVal": dateTime,
+      },
+    };
+
+    const existing = await dynamoDB.scan(checkParams).promise();
+    if (existing.Items.length >= 5) {
+      return res.status(400).json({ error: "Sorry, this time slot is fully booked." });
+    }
 
   const params = {
     TableName: RESERVATION_TABLE,
@@ -58,7 +74,6 @@ router.post("/", async (req, res) => {
     },
   };
 
-  try {
     // Save reservation in DynamoDB
     await dynamoDB.put(params).promise();
 
