@@ -22,7 +22,7 @@ const Reviews = () => {
 
   const fetchReviews = async () => {
     try {
-      const response = await fetch("http://localhost:3000/fetchReviews");
+      const response = await fetch("/fetchReviews");
       const data = await response.json();
       setReviews(data);
     } catch (error) {
@@ -57,18 +57,21 @@ const Reviews = () => {
       console.log("Submit", values);
 
       const formData = new FormData();
-      formData.append('reviewTitle', formik.values.reviewTitle);
-      formData.append('foodRating', formik.values.foodRating);
-      formData.append('serviceRating', formik.values.serviceRating);
-      formData.append('overallExperience', formik.values.overallExperience);
-      formData.append('photo', formik.values.photo ? formik.values.photo : null);
-      formData.append('name', formik.values.name);
-      formData.append('email', formik.values.email);
-      formData.append('reviewContent', formik.values.reviewContent);
+      formData.append("reviewTitle", formik.values.reviewTitle);
+      formData.append("foodRating", formik.values.foodRating);
+      formData.append("serviceRating", formik.values.serviceRating);
+      formData.append("overallExperience", formik.values.overallExperience);
+      formData.append(
+        "photo",
+        formik.values.photo ? formik.values.photo : null
+      );
+      formData.append("name", formik.values.name);
+      formData.append("email", formik.values.email);
+      formData.append("reviewContent", formik.values.reviewContent);
 
       try {
-        const response = await fetch('http://localhost:3000/submitReview/', {
-          method: 'POST',
+        const response = await fetch("/submitReview/", {
+          method: "POST",
           body: formData,
         });
 
@@ -78,7 +81,7 @@ const Reviews = () => {
           window.location.reload();
         }
       } catch (error) {
-        console.error('Error submitting review:', error);
+        console.error("Error submitting review:", error);
       }
     },
     validationSchema: Yup.object({
@@ -138,6 +141,7 @@ const Reviews = () => {
                       value={formik.values.foodRating || ""}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
+                      label="How would you rate the quality of the food? (5 is best)"
                     >
                       <MenuItem value={1}>1</MenuItem>
                       <MenuItem value={2}>2</MenuItem>
@@ -162,6 +166,7 @@ const Reviews = () => {
                       value={formik.values.serviceRating || ""}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
+                      label="How would you rate the service you received? (5 is best)"
                     >
                       <MenuItem value={1}>1</MenuItem>
                       <MenuItem value={2}>2</MenuItem>
@@ -186,6 +191,7 @@ const Reviews = () => {
                       value={formik.values.overallExperience || ""}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
+                      label="How was your overall dining experience? (5 is best)"
                     >
                       <MenuItem value={1}>1</MenuItem>
                       <MenuItem value={2}>2</MenuItem>
@@ -293,15 +299,15 @@ const Reviews = () => {
 
         <div className="reviews-list">
           <h2>Customer Reviews</h2>
-          
+
           {/* Sorting Buttons */}
           <div style={{ margin: "20px", display: "flex", gap: "20px" }}>
             <Button
               onClick={() => sortReviews("asc")}
               style={{
                 borderRadius: 10,
-                color: "#e2b7b9", 
-                border: "2px solid #e2b7b9", 
+                color: "#e2b7b9",
+                border: "2px solid #e2b7b9",
                 backgroundColor: "white",
                 padding: "18px 25px",
                 fontSize: "18px",
@@ -313,8 +319,8 @@ const Reviews = () => {
             <Button
               style={{
                 borderRadius: 10,
-                color: "#e2b7b9", 
-                border: "2px solid #e2b7b9", 
+                color: "#e2b7b9",
+                border: "2px solid #e2b7b9",
                 backgroundColor: "white",
                 padding: "18px 25px",
                 fontSize: "18px",
@@ -327,16 +333,27 @@ const Reviews = () => {
           </div>
 
           {reviews.length === 0 ? (
-            <p>There are currently no reviews yet. Be the first to leave one!</p>
+            <p>
+              There are currently no reviews yet. Be the first to leave one!
+            </p>
           ) : (
             reviews.map((review) => (
               <div key={review.reviewId} className="review-card">
                 <h3>{review.reviewTitle}</h3>
                 <p>{review.reviewContent}</p>
-                <p><strong>Food Rating:</strong> {review.foodRating}</p>
-                <p><strong>Service Rating:</strong> {review.serviceRating}</p>
-                <p><strong>Overall Experience:</strong> {review.overallExperience}</p>
-                {review.photoUrl && <img src={review.photoUrl} alt="Review Photo" />}
+                <p>
+                  <strong>Food Rating:</strong> {review.foodRating}
+                </p>
+                <p>
+                  <strong>Service Rating:</strong> {review.serviceRating}
+                </p>
+                <p>
+                  <strong>Overall Experience:</strong>{" "}
+                  {review.overallExperience}
+                </p>
+                {review.photoUrl && (
+                  <img src={review.photoUrl} alt="Review Photo" />
+                )}
               </div>
             ))
           )}

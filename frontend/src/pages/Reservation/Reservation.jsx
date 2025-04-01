@@ -25,7 +25,7 @@ const Reservation = () => {
     },
     onSubmit: async (values, { resetForm }) => {
       try {
-        const response = await fetch("http://localhost:3000/api/reservations", {
+        const response = await fetch("/api/reservations", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(values),

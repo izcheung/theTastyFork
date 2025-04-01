@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "./components/Navbar/navbar";
+import Navbar from "./components/Navbar/Navbar";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Footer from "./components/Footer/Footer";
@@ -21,7 +21,7 @@ const App = () => {
           <Route path="reviews" element={<Reviews />} />
           <Route path="/contactus" element={<ContactUs />} />
           <Route path="/reservation" element={<Reservation />} />
-          <Route path="/admin/contact" element={<AdminContacts />} />
+          <Route path="/admin/contact-page" element={<AdminContacts />} />
           <Route path="/admin/reservations" element={<AdminReservation />} />
         </Routes>
       </div>

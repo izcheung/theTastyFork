@@ -14,7 +14,7 @@ const AdminContacts = () => {
 
   const fetchContacts = async () => {
     try {
-      const response = await fetch("http://localhost:3000/admin/contact");
+      const response = await fetch("/admin/contact");
       if (!response.ok) {
         throw new Error("Failed to fetch contacts");
       }
