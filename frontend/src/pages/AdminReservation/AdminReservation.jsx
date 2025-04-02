@@ -30,15 +30,16 @@ const AdminReservation = () => {
     const dateObj = new Date(dateStr);
 
     const month = dateObj.toLocaleString("en-US", { month: "long" });
-    const day = dateObj.getUTCDate(); // use getDate() if local time
+    const day = dateObj.getUTCDate();
     const year = dateObj.getUTCFullYear();
 
-    let hours = dateObj.getUTCHours(); // use getHours() if local time
-    const minutes = dateObj.getUTCMinutes();
+    let hours = dateObj.getUTCHours();
+    let minutes = dateObj.getUTCMinutes();
     const ampm = hours >= 12 ? "pm" : "am";
     hours = hours % 12 || 12;
+    minutes = minutes < 10 ? `0${minutes}` : minutes;
 
-    return `${month}. ${day}, ${year} at ${hours}${ampm}`;
+    return `${month}. ${day}, ${year} at ${hours}:${minutes}${ampm}`;
   };
 
   useEffect(() => {
