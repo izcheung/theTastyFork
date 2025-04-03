@@ -9,6 +9,7 @@ import ContactUs from "./pages/ContactUs/ContactUs";
 import Reservation from "./pages/Reservation/Reservation";
 import AdminContacts from "./pages/AdminContactUs/AdminContact";
 import AdminReservation from "./pages/AdminReservation/AdminReservation";
+import AdminReview from "./pages/AdminReview/AdminReview";
 
 const App = () => {
   return (
@@ -23,9 +24,9 @@ const App = () => {
           <Route path="/reservation" element={<Reservation />} />
           <Route path="/admin/contact-page" element={<AdminContacts />} />
           <Route path="/admin/reservations" element={<AdminReservation />} />
+          <Route path="/admin/reviews" element={<AdminReview />} />
         </Routes>
       </div>
-      {/* <Footer /> */}
     </>
   );
 };
