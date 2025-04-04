@@ -74,4 +74,36 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+    const id = req.params.id;
+  
+    // 1. Get the reservation first
+    const getParams = {
+      TableName: REVIEW_TABLE,
+      Key: { reviewId: id },
+    };
+  
+    try {
+      console.log(getParams);
+      const data = await dynamoDB.get(getParams).promise();
+      console.log("=========");
+      console.log(data);
+      if (!data.Item) {
+        return res.status(404).json({ status: "error", message: "Review not found" });
+      }
+
+      // 2. Delete the reservation
+      await dynamoDB.delete(getParams).promise();
+
+      res.status(200).json({
+        status: "success",
+        message: "Review deleted",
+      });
+  
+    } catch (error) {
+      console.error("Admin delete error:", error);
+      res.status(500).json({ status: "error", message: "Could not delete review" });
+    }
+  });
+
 module.exports = router;
