@@ -7,20 +7,20 @@ const AdminReservation = () => {
 
   const fetchReservations = async () => {
     try {
-      const response = await fetch(
-        "/api/admin/reservations"
-      );
+      const response = await fetch("/api/admin/reservations");
       if (!response.ok) {
         throw new Error("Failed to fetch reservations");
       }
       const data = await response.json();
+      const sortedData = data.data.sort(
+        (a, b) => new Date(b.dateTime) - new Date(a.dateTime)
+      );
 
-      const formattedData = data.data.map((reservation) => ({
+      const formattedData = sortedData.map((reservation) => ({
         ...reservation,
         formattedDate: formatDateTime(reservation.dateTime),
       }));
       setReservations(formattedData);
-     
     } catch (error) {
       console.error("Error fetching reservation messages:", error);
     }
@@ -28,17 +28,18 @@ const AdminReservation = () => {
 
   const formatDateTime = (dateStr) => {
     const dateObj = new Date(dateStr);
-  
+
     const month = dateObj.toLocaleString("en-US", { month: "long" });
-    const day = dateObj.getUTCDate(); // use getDate() if local time
+    const day = dateObj.getUTCDate();
     const year = dateObj.getUTCFullYear();
-  
-    let hours = dateObj.getUTCHours(); // use getHours() if local time
-    const minutes = dateObj.getUTCMinutes();
+
+    let hours = dateObj.getUTCHours();
+    let minutes = dateObj.getUTCMinutes();
     const ampm = hours >= 12 ? "pm" : "am";
     hours = hours % 12 || 12;
-  
-    return `${month}. ${day}, ${year} at ${hours}${ampm}`;
+    minutes = minutes < 10 ? `0${minutes}` : minutes;
+
+    return `${month}. ${day}, ${year} at ${hours}:${minutes}${ampm}`;
   };
 
   useEffect(() => {
@@ -47,32 +48,27 @@ const AdminReservation = () => {
 
   const deleteReservation = async (reservationId) => {
     try {
-      const response = await fetch(
-        `/api/admin/reservations/${reservationId}`,
-        {
-          method: "DELETE",
-        }
-      );
-  
+      const response = await fetch(`/api/admin/reservations/${reservationId}`, {
+        method: "DELETE",
+      });
+
       const result = await response.json();
-  
+
       if (!response.ok) {
         throw new Error(result.message || "Failed to delete reservation");
       }
-  
+
       // Remove from frontend list
       setReservations((prev) =>
         prev.filter((reservation) => reservation.id !== reservationId)
       );
-  
+
       alert("Reservation deleted successfully.");
     } catch (error) {
       console.error("Delete error:", error);
       alert("Failed to delete reservation.");
     }
   };
-  
-  
 
   return (
     <Container>
@@ -83,12 +79,9 @@ const AdminReservation = () => {
           justifyContent: "center",
           marginTop: "20px",
         }}
-      >
-        
-      </div>
+      ></div>
       <div>
         <div className="reservation-list">
-
           {reservations.length === 0 ? (
             <p>There are currently no reservations yet.</p>
           ) : (
@@ -107,11 +100,11 @@ const AdminReservation = () => {
                   <strong>Table Size:</strong> {reservation.tableSize}
                 </p>
                 <p>
-                  <strong>Reservation time:</strong>{" "}
-                  {reservation.formattedDate}
+                  <strong>Reservation time:</strong> {reservation.formattedDate}
                 </p>
-                <Button onClick={() => deleteReservation(reservation.id)}>Delete Reservation</Button>
-
+                <Button onClick={() => deleteReservation(reservation.id)}>
+                  Delete Reservation
+                </Button>
               </div>
             ))
           )}
