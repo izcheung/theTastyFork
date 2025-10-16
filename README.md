@@ -3,6 +3,19 @@
 <img src="./screenshots/Homepage.png" alt="Homepage" width="700"/>
 <img src="./screenshots/Reservation.png" alt="Homepage" width="700"/>
 
+## Table of Contents
+
+1. [Summary](#summary)
+2. [Motivation](#motivation)
+3. [Requirements](#requirements)
+4. [Tech Stack](#tech-stack)
+5. [Quick Start](#quick-start)
+6. [Features](#features)
+7. [API Endpoints](#api-endpoints)
+8. [Project Structure](#project-structure)
+9. [Contributors](#contributors)
+10. [Gallery](#gallery)
+
 ## Summary
 
 "The Tasty Fork" is a full‑stack web app for a fictitious restaurant, built with React and Node.js and leveraging AWS for data storage, file uploads, and notifications. Customers can browse the menu, submit photo reviews, contact the restaurant, and book reservations, while admins manage reservations and reviews. AWS services used include DynamoDB (reservations and reviews), S3 (review photos), and SNS (SMS and email notifications).
@@ -11,48 +24,17 @@
 
 The Tasty Fork was developed as a collaborative project to deepen our understanding of full‑stack web development and gain practical experience with AWS cloud services. Working as a team, we applied concepts like RESTful APIs and state management in React, while gaining hands-on experience with AWS services.
 
-## Tech Stack
-
-- **Frontend**: React, MUI, Formik, Yup,
-- **Backend**: Node.js, Express
-- **Cloud / Infrastructure**: AWS (DynamoDB, S3, SNS) via `aws-sdk` v2
-
 ## Requirements
 
 - Node.js 18+ and npm
 - An AWS account with credentials
 - Provisioned AWS resources: DynamoDB, S3 buckets, SNS topic
 
-## Features
+## Tech Stack
 
-- Menu Browsing: Users can explore the menu.
-
-- Reservations: Customers can book a table, receive SMS confirmations (via AWS SNS), and the reservation is stored in DynamoDB.
-
-- Reviews: Users can submit reviews with optional photos uploaded to S3, stored in DynamoDB.
-
-- Contact Form: Sends messages to admins via SNS email subscription.
-
-- Admin Management: View, update, or cancel reservations and manage reviews.
-
-## API Endpoints
-
-The backend mounts the following route modules in `backend/app.js`:
-
-- `review.js`
-  - `POST /submitReview` → Create review (with optional photo upload to S3); persists to DynamoDB
-  - `GET /fetchReviews` → List reviews from DynamoDB
-  - `DELETE /api/admin/review/:id` → Admin deletes a review
-- `reservation.js`
-  - `POST /api/reservations` → Create reservation, save to DynamoDB, send SMS via SNS
-  - `GET  /api/reservations` → List reservations
-- `adminReservation.js`
-  - `GET    /api/admin/reservations` → Admin lists reservations
-  - `PUT    /api/admin/reservations/:id` → Admin updates reservation and re‑notifies via SNS
-  - `DELETE /api/admin/reservations/:id` → Admin cancels reservation and notifies via SNS
-- `contact.js`
-  - `POST /api/contact` → Save message to DynamoDB, send email via SNS
-  - `GET  /api/contact` → List contact messages
+- **Frontend**: React, MUI, Formik, Yup,
+- **Backend**: Node.js, Express
+- **Cloud / Infrastructure**: AWS (DynamoDB, S3, SNS) via `aws-sdk` v2
 
 ## Quick Start
 
@@ -103,6 +85,37 @@ npm install
 npm run dev
 ```
 
+## Features
+
+- Menu Browsing: Users can explore the menu.
+
+- Reservations: Customers can book a table, receive SMS confirmations (via AWS SNS), and the reservation is stored in DynamoDB.
+
+- Reviews: Users can submit reviews with optional photos uploaded to S3, stored in DynamoDB.
+
+- Contact Form: Sends messages to admins via SNS email subscription.
+
+- Admin Management: View, update, or cancel reservations and manage reviews.
+
+## API Endpoints
+
+The backend mounts the following route modules in `backend/app.js`:
+
+- `review.js`
+  - `POST /submitReview` → Create review (with optional photo upload to S3); persists to DynamoDB
+  - `GET /fetchReviews` → List reviews from DynamoDB
+  - `DELETE /api/admin/review/:id` → Admin deletes a review
+- `reservation.js`
+  - `POST /api/reservations` → Create reservation, save to DynamoDB, send SMS via SNS
+  - `GET  /api/reservations` → List reservations
+- `adminReservation.js`
+  - `GET    /api/admin/reservations` → Admin lists reservations
+  - `PUT    /api/admin/reservations/:id` → Admin updates reservation and re‑notifies via SNS
+  - `DELETE /api/admin/reservations/:id` → Admin cancels reservation and notifies via SNS
+- `contact.js`
+  - `POST /api/contact` → Save message to DynamoDB, send email via SNS
+  - `GET  /api/contact` → List contact messages
+
 ## Project Structure
 
 ```
@@ -141,9 +154,6 @@ npm run dev
 
 ## Gallery
 
-<details>
-<summary>More Screenshots</summary>
 <img src="./screenshots/Menu.png" alt="Menu page" width="700"/>
 <img src="./screenshots/Reviews.png" alt="Reviews page" width="700"/>
 <img src="./screenshots/ContactForm.png" alt="Contact page" width="700"/>
-</details>
