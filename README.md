@@ -1,5 +1,8 @@
 # The Tasty Fork
 
+<img src="./screenshots/Homepage.png" alt="Homepage" width="400"/>
+<img src="./screenshots/Reservation.png" alt="Homepage" width="400"/>
+
 ## Summary
 
 "The Tasty Fork" is a full‑stack web app for a fictitious restaurant, built with React and Node.js and leveraging AWS for data storage, file uploads, and notifications. Customers can browse the menu, submit photo reviews, contact the restaurant, and book reservations, while admins manage reservations and reviews. AWS services used include DynamoDB (reservations and reviews), S3 (review photos), and SNS (SMS and email notifications).
@@ -137,3 +140,12 @@ The backend mounts the following route modules in `backend/app.js`:
 - Irene Cheung
 - Hsin Pang
 - Elena Zhu
+
+## Gallery
+
+<details>
+<summary>More Screenshots</summary>
+<img src="./screenshots/Menu.png" alt="Menu page" width="400"/>
+<img src="./screenshots/Reviews.png" alt="Reviews page" width="400"/>
+<img src="./screenshots/ContactForm.png" alt="Contact page" width="400"/>
+</details>
