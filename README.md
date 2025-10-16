@@ -1,4 +1,4 @@
-# The Tasty Fork
+# 🍴 The Tasty Fork
 
 <img src="./screenshots/Homepage.png" alt="Homepage" width="700"/>
 <img src="./screenshots/Reservation.png" alt="Homepage" width="700"/>
@@ -10,18 +10,6 @@
 ## Motivation
 
 The Tasty Fork was developed as a collaborative project to deepen our understanding of full‑stack web development and gain practical experience with AWS cloud services. Working as a team, we applied concepts like RESTful APIs and state management in React, while gaining hands-on experience with AWS services.
-
-## Features
-
-- Customers can browse the menu
-
-- Customers can make reservations and receive SMS confirmations
-
-- Customers can submit reviews, with the option to upload photos
-
-- Customers can use a contact form to send messages directly to admins via email
-
-- Admins can manage reservations (view, update, or cancel) and remove reviews
 
 ## Tech Stack
 
@@ -35,56 +23,17 @@ The Tasty Fork was developed as a collaborative project to deepen our understand
 - An AWS account with credentials
 - Provisioned AWS resources: DynamoDB, S3 buckets, SNS topic
 
-## Configuration
+## Features
 
-The backend expects a `backend/config.js` module that provides AWS and resource configuration. Create `backend/config.js` with content similar to:
+- Menu Browsing: Users can explore the menu.
 
-```javascript
-// backend/config.js
-module.exports = {
-  awsConfig: {
-    region: "YOUR_AWS_REGION",
-    // Optionally provide access keys or rely on environment/instance roles
-    // accessKeyId: "YOUR_ACCESS_KEY_ID",
-    // secretAccessKey: "YOUR_SECRET_ACCESS_KEY",
-  },
-  reservationTable: "YOUR_RESERVATION_TABLE_NAME",
-  reviewTable: "YOUR_REVIEW_TABLE_NAME",
-  contactTable: "YOUR_CONTACT_TABLE_NAME",
-  s3Bucket: "YOUR_S3_BUCKET_NAME",
-  snsTopicArn: "YOUR_SNS_TOPIC_ARN",
-};
-```
+- Reservations: Customers can book a table, receive SMS confirmations (via AWS SNS), and the reservation is stored in DynamoDB.
 
-**Note**: Replace each placeholder with your actual AWS resources. Do not commit secrets to version control.
+- Reviews: Users can submit reviews with optional photos uploaded to S3, stored in DynamoDB.
 
-## How AWS Services are applied
+- Contact Form: Sends messages to admins via SNS email subscription.
 
-- **Amazon DynamoDB**: Stores reservations, reviews, and contact messages in separate tables.
-- **Amazon S3 bucket**: Stores uploaded review photos.
-- **Amazon SNS**: Sends SMS confirmations/updates/cancellations for reservations and publishes contact form submissions to an email‑subscribed topic.
-
-## Quick Start
-
-### Backend (Node.js)
-
-```bash
-cd backend
-npm install
-node app.js
-```
-
-The server defaults to http://localhost:3000
-
-### Frontend (Vite + React)
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-The app runs at the local URL printed by Vite (default: http://localhost:5173).
+- Admin Management: View, update, or cancel reservations and manage reviews.
 
 ## API Endpoints
 
@@ -104,6 +53,55 @@ The backend mounts the following route modules in `backend/app.js`:
 - `contact.js`
   - `POST /api/contact` → Save message to DynamoDB, send email via SNS
   - `GET  /api/contact` → List contact messages
+
+## Quick Start
+
+Clone the repository:
+
+```bash
+git clone https://github.com/izcheung/theTastyFork.git
+cd theTastyFork
+```
+
+### Backend (Node.js + Express.js)
+
+The server defaults to http://localhost:3000
+
+The backend expects a `backend/config.js` module that provides AWS and resource configuration. Create `backend/config.js` with content similar to:
+
+```javascript
+// backend/config.js
+module.exports = {
+  awsConfig: {
+    region: "YOUR_AWS_REGION",
+    accessKeyId: "YOUR_ACCESS_KEY_ID",
+    secretAccessKey: "YOUR_SECRET_ACCESS_KEY",
+  },
+  reservationTable: "YOUR_RESERVATION_TABLE_NAME",
+  reviewTable: "YOUR_REVIEW_TABLE_NAME",
+  contactTable: "YOUR_CONTACT_TABLE_NAME",
+  s3Bucket: "YOUR_S3_BUCKET_NAME",
+  snsTopicArn: "YOUR_SNS_TOPIC_ARN",
+};
+```
+
+**Note**: Replace each placeholder with your actual AWS resources. Do not commit secrets to version control.
+
+```bash
+cd backend
+npm install
+node app.js
+```
+
+### Frontend (Vite + React)
+
+The app runs at the local URL printed by Vite (default: http://localhost:5173).
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 ## Project Structure
 
