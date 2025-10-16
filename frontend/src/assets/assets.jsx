@@ -20,20 +20,10 @@ export const assets = {
   food5,
   food6,
   food8,
+  food9,
   logo,
 };
 
-// export const menuitems = {
-//   food,
-//   food2,
-//   food3,
-//   food4,
-//   food5,
-//   food6,
-//   food9,
-//   food10,
-//   food11,
-// };
 export const menuitems = {
   food: {
     image: food,
