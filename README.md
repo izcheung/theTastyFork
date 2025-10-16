@@ -1,7 +1,7 @@
 # The Tasty Fork
 
-<img src="./screenshots/Homepage.png" alt="Homepage" width="500"/>
-<img src="./screenshots/Reservation.png" alt="Homepage" width="500"/>
+<img src="./screenshots/Homepage.png" alt="Homepage" width="700"/>
+<img src="./screenshots/Reservation.png" alt="Homepage" width="700"/>
 
 ## Summary
 
@@ -145,7 +145,7 @@ The backend mounts the following route modules in `backend/app.js`:
 
 <details>
 <summary>More Screenshots</summary>
-<img src="./screenshots/Menu.png" alt="Menu page" width="500"/>
-<img src="./screenshots/Reviews.png" alt="Reviews page" width="500"/>
-<img src="./screenshots/ContactForm.png" alt="Contact page" width="500"/>
+<img src="./screenshots/Menu.png" alt="Menu page" width="700"/>
+<img src="./screenshots/Reviews.png" alt="Reviews page" width="700"/>
+<img src="./screenshots/ContactForm.png" alt="Contact page" width="700"/>
 </details>
