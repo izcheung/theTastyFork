@@ -35,25 +35,6 @@ The Tasty Fork was developed as a collaborative project to deepen our understand
 
 - Admin Management: View, update, or cancel reservations and manage reviews.
 
-## API Endpoints
-
-The backend mounts the following route modules in `backend/app.js`:
-
-- `review.js`
-  - `POST /submitReview` → Create review (with optional photo upload to S3); persists to DynamoDB
-  - `GET /fetchReviews` → List reviews from DynamoDB
-  - `DELETE /api/admin/review/:id` → Admin deletes a review
-- `reservation.js`
-  - `POST /api/reservations` → Create reservation, save to DynamoDB, send SMS via SNS
-  - `GET  /api/reservations` → List reservations
-- `adminReservation.js`
-  - `GET    /api/admin/reservations` → Admin lists reservations
-  - `PUT    /api/admin/reservations/:id` → Admin updates reservation and re‑notifies via SNS
-  - `DELETE /api/admin/reservations/:id` → Admin cancels reservation and notifies via SNS
-- `contact.js`
-  - `POST /api/contact` → Save message to DynamoDB, send email via SNS
-  - `GET  /api/contact` → List contact messages
-
 ## Quick Start
 
 Clone the repository:
@@ -103,8 +84,26 @@ npm install
 npm run dev
 ```
 
-## Project Structure
+## API Endpoints
 
+The backend mounts the following route modules in `backend/app.js`:
+
+- `review.js`
+  - `POST /submitReview` → Create review (with optional photo upload to S3); persists to DynamoDB
+  - `GET /fetchReviews` → List reviews from DynamoDB
+  - `DELETE /api/admin/review/:id` → Admin deletes a review
+- `reservation.js`
+  - `POST /api/reservations` → Create reservation, save to DynamoDB, send SMS via SNS
+  - `GET  /api/reservations` → List reservations
+- `adminReservation.js`
+  - `GET    /api/admin/reservations` → Admin lists reservations
+  - `PUT    /api/admin/reservations/:id` → Admin updates reservation and re‑notifies via SNS
+  - `DELETE /api/admin/reservations/:id` → Admin cancels reservation and notifies via SNS
+- `contact.js`
+  - `POST /api/contact` → Save message to DynamoDB, send email via SNS
+  - `GET  /api/contact` → List contact messages
+
+## Project Structure
 ```
 .
 ├── backend
